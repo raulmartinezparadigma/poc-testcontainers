@@ -1,0 +1,80 @@
+spring:
+  output:
+    ansi:
+      # Activamos los colorines al arranque   
+      enabled: ALWAYS          
+
+# Puerto del servidor
+server:
+      port: <%= @config['ms_example_server_port'] %>
+      # Tunning del server, para uso de procesadores coordinado
+      undertow: 
+        ioThreads: 1
+        #workerThreads: 150
+        accesslog: 
+          enabled: true
+#      compression: 
+#        enabled: true
+#        mimeTypes: application/json
+#        minResponseSize: 4096
+
+#Spring Boot Actuator
+management:
+  endpoints:
+    # Determinamos que endpoints publicamos y cuales no
+    enabled-by-default: false
+  endpoint:
+    # Publicamos unicamente el check health
+    health:
+      enabled: true
+  server:
+    servlet:
+      context-path: /actuator
+    port: 8080 
+            
+# Configuración referente a la autenticacion jwt      
+authentication:
+  jwt:
+    # Cabecera del token
+    header: "<%= @config['ms_example_authentication_jwt_header'] %>"
+    # Flag para comprobar la expiracion 
+    comprobateExpiration : <%= @config['ms_example_authentication_jwt_comprobateExpiration'] %>
+    # Autenticacion basada en Certificado
+    certificate:
+      type: "JKS"
+      path: "<%= @config['ms_example_authentication_jwt_certificate_path'] %>"
+      password: "<%= @config['ms_example_authentication_jwt_certificate_password'] %>"
+      alias: "<%= @config['ms_example_authentication_jwt_certificate_alias'] %>"  
+    # Cabeceras a generar (solo las que nos interesan) y leer
+    claims: 
+          - 
+            name : "<%= @config['ms_example_authentication_jwt_claims_sub_name'] %>"
+            exampleValue : "51168482"
+            prefix: "<%= @config['ms_example_authentication_jwt_claims_sub_prefix'] %>"
+        
+# Opciones de validacion         
+validation:
+  error:
+    # flag para generar el wrapper de eci en las respuestas por defecto es true
+    eciWrapper : true
+    
+# Trazas I/O de los servicios    
+logbook:
+  exclude:
+    - /actuator/**
+  filter.enabled: true
+  format.style: <%= @config['ms_example_logbook_format'] %>
+  obfuscate:
+    headers:
+      - Authorization
+      - x-jwt-assertion
+    parameters:
+      - access_token
+      - password
+  write:
+    category: http.poc-testcontainers-ms
+    level: <%= @config['ms_example_logbook_write_level'] %>
+    
+# Urls de la integración con los servicios externos de ECI
+integration:
+

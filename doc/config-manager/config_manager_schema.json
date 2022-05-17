@@ -1,0 +1,124 @@
+{
+  "type": "object",
+  "properties": {
+    "services_config": {
+      "type": "object",
+      "properties": {
+        "ms_example_server_port": {
+          "type": "string"
+        },
+        "ms_example_authentication_jwt_header": {
+          "type": "string"
+        },
+        "ms_example_authentication_jwt_comprobateExpiration": {
+          "type": "string"
+        },
+        "ms_example_authentication_jwt_certificate_path": {
+          "type": "string"
+        },
+        "ms_example_authentication_jwt_certificate_password": {
+          "type": "string"
+        },
+        "ms_example_authentication_jwt_certificate_alias": {
+          "type": "string"
+        },
+        "ms_example_authentication_jwt_claims_sub_name": {
+          "type": "string"
+        },
+        "ms_example_authentication_jwt_claims_sub_prefix": {
+          "type": "string"
+        },
+        "ms_example_logbook_format": {
+          "type": "string"
+        },
+        "ms_example_logbook_write_level": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ms_example_server_port",
+        "ms_example_authentication_jwt_header",
+        "ms_example_authentication_jwt_comprobateExpiration",
+        "ms_example_authentication_jwt_certificate_path",
+        "ms_example_authentication_jwt_certificate_password",
+        "ms_example_authentication_jwt_certificate_alias",
+        "ms_example_authentication_jwt_claims_sub_name",
+        "ms_example_authentication_jwt_claims_sub_prefix",
+        "ms_example_logbook_format",
+        "ms_example_logbook_write_level"
+      ]
+    },
+    "docker_launcher_config": {
+      "type": "object",
+      "properties": {
+        "erb_appconfig_extra_priority_array": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "erb_source_path": {
+          "type": "string"
+        },
+        "erb_appconfig_key": {
+          "type": "string"
+        },
+        "container_launch_cmd": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "erb_appconfig_extra_priority_array",
+        "erb_source_path",
+        "erb_appconfig_key",
+        "container_launch_cmd"
+      ]
+    },
+    "dcos_service_config": {
+      "type": "object",
+      "properties": {
+        "instances": {
+          "type": "string"
+        },
+        "cpus": {
+          "type": "string"
+        },
+        "mem": {
+          "type": "string"
+        },
+        "disk": {
+          "type": "string"
+        },
+        "waitdeploy": {
+          "type": "string"
+        },
+        "logical_environment": {
+          "type": "string"
+        },
+        "dns_environment": {
+          "type": "string"
+        },
+        "dns_external_environment": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "instances",
+        "cpus",
+        "mem",
+        "disk",
+        "waitdeploy",
+        "logical_environment",
+        "dns_environment",
+        "dns_external_environment"
+      ]
+    }
+  },
+  "required": [
+    "services_config",
+    "docker_launcher_config",
+    "dcos_service_config"
+  ]
+}

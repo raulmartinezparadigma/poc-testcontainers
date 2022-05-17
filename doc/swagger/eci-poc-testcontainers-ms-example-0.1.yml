@@ -1,0 +1,106 @@
+swagger: '2.0'
+info:
+  description: Documentación del Microservicio de Ejemplo del proyecto poc-testcontainers
+  version: 0.0.0.1-SNAPSHOT
+  title: Documentación del Microservicio de example de - poc-testcontainers
+  contact:
+    name: GIS
+    url: 'http://pordeterminar'
+    email: ecigisreutilizacion@gmail.com
+host: pordeterminar.des.eci.geci
+basePath: /poc-testcontainers
+schemes:
+  - http
+  - https
+paths:
+  /examples:
+    post:
+      tags:
+        - Examples - Push Notifications
+      summary: Ejemplo de alta
+      description: Alta  
+      operationId: exampleCreate
+      produces:
+        - application/json
+      parameters:
+        - name: Content-Type
+          in: header
+          description: Tipo de contenido en la cabecera
+          required: true
+          type: string
+          default: application/json
+        - name: x-jwt-assertion
+          in: header
+          description: Token JWT
+          required: true
+          type: string
+          default: ''
+        - name: data
+          in: body
+          description: Datos necesarios para realizar la creación
+          required: true
+          schema:
+            $ref: '#/definitions/createExampleRQ'
+      responses:
+        '201':
+          description: Example realizado correctamente
+          schema:
+            $ref: '#/definitions/createExampleRS'
+        '400':
+          schema:
+            $ref: '#/definitions/createExampleErrorRS'
+          description: Bad request
+
+        '403':
+          schema:
+            $ref: '#/definitions/createExampleErrorRS'
+          description: Token no válido o caducado
+          
+        '500':
+          schema:
+            $ref: '#/definitions/createExampleErrorRS'
+          description: 'Error interno, contacte con el propietario del servicio'
+definitions:
+  exampleDeviceType:
+    type: array
+    items:
+      type: string
+      enum:
+        - IOS
+        - ANDROID
+
+  createExampleRQ:
+    required:
+      - type
+      - appId
+    properties:
+      type:
+        $ref: '#/definitions/exampleDeviceType'
+      appId:
+        type: string
+  createExampleRS:
+    required:
+      - values
+    properties:
+      values:
+        type: array
+        items:
+          type: string
+
+  createExampleErrorRS:
+    properties:
+      errors:
+        type: array
+        items:
+          $ref: '#/definitions/ErrorType'
+        
+  ErrorType:
+   required:
+      - description
+   properties:
+      code:
+        type: string
+      description:
+        type: string
+      field:
+        type: string

@@ -1,0 +1,115 @@
+{
+  "volumes": null,
+  "id": "/${environment}/poc-testcontainers/poc-testcontainers-ms-example",
+  "cmd": null,
+  "args": [
+    "ruby",
+    "/tmp/dockerLauncher.rb"
+  ],
+  "user": null,
+  "env": {
+    "ECISERVICE": "poc-testcontainers/poc-testcontainers-ms-example",
+    "HTTP_PROXY": "",
+    "HTTPS_PROXY": "",
+    "CFGMAN_TOKEN": "${cfgmantoken}",
+    "ECIENVIRONMENT": "${environment}",
+    "CFG_MNG_ENDPOINT": "http://configmanager.eci.geci:8080"
+  },
+  "instances": ${instances},
+  "cpus": ${cpus},
+  "mem": ${mem},
+  "disk": ${disk},
+  "gpus": 0,
+  "executor": null,
+  "constraints": [
+    [
+      "ecienvironment",
+      "LIKE",
+      "${logical_environment}"
+    ],
+    [
+      "ecidloc",
+      "GROUP_BY",
+      "2"
+    ]
+  ],
+  "fetch": null,
+  "storeUrls": null,
+  "backoffSeconds": 1,
+  "backoffFactor": 1.15,
+  "maxLaunchDelaySeconds": 3600,
+  "container": {
+    "docker": {
+      "image": "registry.marathon.mesos:5000/poc-testcontainers/poc-testcontainers-ms-example:${version}",
+      "forcePullImage": true,
+      "privileged": false,
+      "parameters": [
+        {
+          "key": "log-driver",
+          "value": "none"
+        }
+      ],
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "protocol": "tcp",
+          "name": "api",
+          "servicePort": 0,
+          "hostPort": 0,
+          "labels": {
+            "VIP_0": "/${environment}/poc-testcontainers/poc-testcontainers-ms-example:8080"
+          }
+        }
+      ],
+      "network": "USER"
+    },
+    "type": "DOCKER",
+    "volumes": [
+    		{
+ 			"containerPath": "/eci/jwt",
+			"hostPath": "/mnt/nfs/wso2/${environment}/eci/jwt",
+			"mode": "RO"
+		}
+    ]
+  },
+  "healthChecks": [
+    {
+      "path": "/actuator/health",
+      "portIndex": 0,
+      "protocol": "MESOS_HTTP",
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "ignoreHttp1xx": false
+    }
+  ],
+  "readinessChecks": null,
+  "dependencies": null,
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 1,
+    "maximumOverCapacity": 1
+  },
+  "labels": {
+    "DEPLOYMENT_DATE": "${date}",
+    "HAPROXY_GROUP": "internal-${environment}",
+    "HAPROXY_0_ENABLED": "true",
+    "HAPROXY_0_FRONTEND_HEAD": "",
+    "HAPROXY_0_FRONTEND_BACKEND_GLUE": "",
+    "HAPROXY_0_VHOST": "poc-testcontainers-ms-example.${dns_environment}"
+  },
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "ipAddress": {
+    "networkName": "dcos"
+  },
+  "portDefinitions": [],
+  "residency": null,
+  "secrets": null,
+  "unreachableStrategy": {
+    "inactiveAfterSeconds": 0,
+    "expungeAfterSeconds": 0
+  },
+  "taskKillGracePeriodSeconds": 60
+}

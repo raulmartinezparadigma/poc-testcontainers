@@ -1,0 +1,88 @@
+spring:
+  output:
+    ansi:
+      # Activamos los colorines al arranque   
+      enabled: ALWAYS          
+
+# Puerto del servidor
+server:
+      port: 8080
+      # Tunning del server, para uso de procesadores coordinado
+      undertow: 
+        ioThreads: 1
+        #workerThreads: 150
+        accesslog: 
+          enabled: true
+#      compression: 
+#        enabled: true
+#        mimeTypes: application/json
+#        minResponseSize: 4096
+
+#Spring Boot Actuator
+management:
+  endpoints:
+    # Determinamos que endpoints publicamos y cuales no
+    enabled-by-default: false
+  endpoint:
+    # Publicamos unicamente el check health
+    health:
+      enabled: true
+  server:
+    servlet:
+      context-path: /actuator
+    port: 8080 
+            
+# Configuración referente a la autenticacion jwt DE LA LIBRERIA GENÉRICA      
+authentication:
+  jwt:
+    # Cabecera del token
+    header: x-jwt-assertion
+    # Flag para comprobar la expiracion 
+    comprobateExpiration : false
+    # Autenticacion basada en HMac
+    #hmac:
+    #  secret: 9B89B6235838471C506E41369DC20B2BDF5D31A18220E4FBF44064523576FA0C  
+    # Autenticacion basada en Certificado
+    certificate:
+      type: "JKS"
+      # Si este parámetro es true obtendrá el nombre del token jwt      
+      useCertificateNameFromHeader: false
+      # Si la propiedad useCertificateNameFromHeader es true debe ser un directorio si es false deberá ser un full path
+      path: "${basedir}/src/build/env/ci/jwt-certificates.jks"
+      password: "elcorteingles"
+      #alias: "vhkb6yilyhnpw01nyjtarkwx0oy"  
+    # Cabeceras a generar (solo las que nos interesan) y leer
+    claims: 
+          - 
+            name : "sub"
+            exampleValue : "51168482"
+            prefix: "B2E-EMPLEADOS/"
+
+# Opciones de validacion         
+validation:
+  error:
+    # flag para generar el wrapper de eci en las respuestas por defecto es true
+    eciWrapper : true
+        
+# Trazas I/O de los servicios
+logbook:
+  exclude:
+    - /actuator/**
+  filter.enabled: true
+  format.style: http
+  obfuscate:
+    headers:
+      - Authorization
+      - x-jwt-assertion
+    parameters:
+      - access_token
+      - password
+  write:
+    category: http.poc-testcontainers-ms
+    level: INFO
+          
+              
+# Urls de la integración con los servicios externos de ECI (ejemplo de la libreria)
+integration:
+    exampleUrl: "http://www.ssss.com"
+    

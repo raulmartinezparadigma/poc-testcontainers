@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<!-- Añadimos el base de Spring boot y sobreescribiremos las variables   -->
+	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+	<!-- Appender para nuestra app -->
+	<include resource="org/springframework/boot/logging/logback/file-appender.xml" />
+
+	<!-- Appender de la consola  -->
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+
+	
+	<logger name="ch.qos.logback" level="ERROR">
+		<appender-ref ref="CONSOLE" />
+	</logger>
+
+
+	<logger name="com.eci.poctestcontainers" level="DEBUG">
+		<appender-ref ref="CONSOLE" />
+	</logger>
+
+
+	<root level="INFO">
+		<appender-ref ref="CONSOLE" />
+		
+	</root>
+</configuration>

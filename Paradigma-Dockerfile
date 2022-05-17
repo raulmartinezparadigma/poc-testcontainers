@@ -1,0 +1,20 @@
+FROM java:8-jre
+
+ENV FAT_JAR_FILE_NAME poc-testcontainers-ms-example-fat.jar
+ENV FAT_JAR_FILE target/$FAT_JAR_FILE_NAME
+
+# Set the location of the properties
+ENV APP_HOME /opt/application
+
+EXPOSE 8002
+
+COPY $FAT_JAR_FILE $APP_HOME/
+COPY target/classes/application.yml $APP_HOME/
+COPY target/classes/logback.xml $APP_HOME/
+COPY certificate/jwt-certificates.jks $APP_HOME/
+
+
+
+WORKDIR $APP_HOME
+ENTRYPOINT ["sh", "-c"]
+CMD ["java -Xms256m -Xmx512m -Dspring.config.location=application.yml -Dlogging.config=logback.xml  -jar $FAT_JAR_FILE_NAME"]

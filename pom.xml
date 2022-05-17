@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<!-- Pom padre de ECI, necesario para IC -->
+	<parent>
+		<groupId>es.eci.fdos</groupId>
+		<artifactId>eci-pom</artifactId>
+		<version>1.0.0</version>
+	</parent>
+
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.eci.poctestcontainers.ms</groupId>
+	<artifactId>poc-testcontainers-ms-example</artifactId>
+	<packaging>jar</packaging>
+	<version>0.0.0.1-SNAPSHOT</version>
+	<name>poc-testcontainers-ms-example</name>
+
+
+	<organization>
+		<name>Paradigma Digital</name>
+		<url>http://www.paradigmadigital.com</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>paradigma</id>
+			<name>Paradigma</name>
+			<email>eci_components@paradigmadigital.com</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!--Orquesta las dependencias del ecosistema Spring-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<resources>
+
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+
+
+			<resource>
+				<directory>src/build/env/${env}</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.jks</exclude>
+				</excludes>
+			</resource>
+
+			<resource>
+				<directory>src/build/env/${env}</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*.jks</include>
+				</includes>
+			</resource>
+
+			<resource>
+				<directory>src/test/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+
+
+		</resources>
+
+		<plugins>
+
+			<!-- Generacion del fat-jar, conservaremos el original para las referencias 
+				de la documentación -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<classifier>fat</classifier>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Formamos un zip con las plantillas y los ficheros de configuracion -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/assembly/assembly.xml</descriptor>
+							</descriptors>
+							<appendAssemblyId>true</appendAssemblyId>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <fork>true</fork>
+                    <meminitial>512m</meminitial>
+                    <maxmem>1024m</maxmem>
+                    <testIncludes>
+                       <arg>**/Test*.java</arg>
+                       <arg>**/*Test.java</arg>
+                   	</testIncludes>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <compilerArgs>
+                        <compilerArg>
+                            -Amapstruct.suppressGeneratorTimestamp=true
+                        </compilerArg>
+                        <compilerArg>
+                            -Amapstruct.suppressGeneratorVersionInfoComment=true
+                        </compilerArg>
+                        <compilerArg>
+                            -Amapstruct.defaultComponentModel=spring
+                        </compilerArg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+		</plugins>
+	</build>
+
+
+	<dependencies>
+
+
+        
+        <!-- Gestion de los servicios - health ... -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+		</dependency>
+
+
+		<!-- Tests -->
+		<dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+		<dependency>
+			<groupId>oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>12.1.0.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>localstack</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>jdbc</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+	<profiles>
+		<!-- DEVELOPMENT environment profile -->
+		<profile>
+			<id>local</id>
+			<properties>
+				<env>local</env>
+			</properties>
+
+			<build>
+				<plugins>
+					<!-- Sonar plugin -->
+					<plugin>
+						<groupId>org.sonarsource.scanner.maven</groupId>
+						<artifactId>sonar-maven-plugin</artifactId>
+						<version>5.1</version>
+						<dependencies>
+							<dependency>
+								<groupId>mysql</groupId>
+								<artifactId>mysql-connector-java</artifactId>
+								<version>5.1.29</version>
+							</dependency>
+						</dependencies>
+
+
+					</plugin>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>0.7.9</version>
+						<configuration>
+							<excludes>
+								<exclude>**/*DTO*</exclude>
+								<exclude>**/*DTOBuilder*</exclude>
+								<exclude>**/*Configuration*</exclude>
+								<exclude>**/*Configurator*</exclude>
+								<exclude>**/*ConfigurationBuilder*</exclude>
+								<exclude>**/*Exception*</exclude>
+								<exclude>**/*ExceptionBuilder*</exclude>
+								<exclude>**/*MapperImpl*</exclude>
+								<exclude>**/*Type.*</exclude>
+							</excludes>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>report</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+				</plugins>
+
+			</build>
+		</profile>
+
+		<!-- CI environment profile , es el profile por defecto para los despliegues 
+			en ECI -->
+		<profile>
+			<id>ci</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<env>ci</env>
+			</properties>
+			<dependencies>
+			</dependencies>
+			<build>
+			</build>
+		</profile>
+
+
+	</profiles>
+
+
+	<properties>
+		<!-- Exclusiones de coverage para sonar -->
+		<sonar.coverage.exclusions>**/*DTO**,**/*DTOBuilder*,**/*Configurator*,
+			**/*Configuration*,**/*ConfigurationBuilder*,**/*Exception*,**/*ExceptionBuilder*,
+			**/*MapperImpl*, **/*Type.*</sonar.coverage.exclusions>
+
+		<sonar.exclusions>**/*DTO*,**/*DTOBuilder*,**/*Type.*,**/*MapperImpl*,**/*Test.*</sonar.exclusions>
+		
+		<!-- Encoding del proyecto -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Versión de java -->
+		<java-version>1.8</java-version>
+
+		<!-- Versión de spring boot -->
+		<spring-boot.version>2.6.7</spring-boot.version>
+
+		<!-- Plugins -->
+		<maven.javadoc.plugin.version>2.9</maven.javadoc.plugin.version>
+
+		<!-- common libs -->
+		<poctestcontainers.libs.version>0.0.0.1-SNAPSHOT</poctestcontainers.libs.version>
+		<paradigma.libs.version>3.0.30.0</paradigma.libs.version>
+
+		<org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
+		<lombok.version>1.16.18</lombok.version>
+        <mockito.version>1.10.19</mockito.version>
+		<testcontainers.version>1.16.0</testcontainers.version>
+		<lombok.version>1.18.12</lombok.version>
+	</properties>
+</project>

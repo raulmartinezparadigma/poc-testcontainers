@@ -1,0 +1,32 @@
+{
+  "services_config": {
+   "ms_example_server_port" : "8080",
+	"ms_example_authentication_jwt_header" : "x-jwt-assertion",
+	"ms_example_authentication_jwt_comprobateExpiration" : "true",
+	"ms_example_authentication_jwt_certificate_path" : "/eci/jwt/jwt-certificates.jks",
+	"ms_example_authentication_jwt_certificate_password" : "elcorteingles",
+	"ms_example_authentication_jwt_certificate_alias" : "",
+	"ms_example_authentication_jwt_claims_sub_name" : "sub",
+	"ms_example_authentication_jwt_claims_sub_prefix" : "B2E-EMPLEADOS/",
+	"ms_example_logbook_format" : "http",
+	"ms_example_logbook_write_level" : "DEBUG"
+  },
+  "docker_launcher_config": {
+    "erb_appconfig_extra_priority_array": [
+      ""
+    ],
+    "erb_source_path": "/",
+    "erb_appconfig_key": "services_config",
+    "container_launch_cmd": "java -Xms128m -Xmx256m -Dspring.config.location=/application.yml -Dlogging.config=/logback.xml -jar /poc-testcontainers-ms-example.jar"
+  },
+  "dcos_service_config": {
+    "instances": "2",
+    "cpus": "2",
+    "mem": "1024",
+    "disk": "0",
+    "waitdeploy": "180",
+    "logical_environment": "uat",
+    "dns_environment": "uat.eci.geci",
+    "dns_external_environment": "uat.elcorteingles.es"
+  }
+}
