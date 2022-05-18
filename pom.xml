@@ -246,12 +246,14 @@
 			<version>${testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.testcontainers/oracle-xe -->
 		<dependency>
 			<groupId>org.testcontainers</groupId>
-			<artifactId>jdbc</artifactId>
+			<artifactId>oracle-xe</artifactId>
 			<version>${testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>
+
 
 	</dependencies>
 	<profiles>
@@ -364,7 +366,7 @@
 		<org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
 		<lombok.version>1.16.18</lombok.version>
         <mockito.version>1.10.19</mockito.version>
-		<testcontainers.version>1.16.0</testcontainers.version>
+		<testcontainers.version>1.17.0</testcontainers.version>
 		<lombok.version>1.18.12</lombok.version>
 	</properties>
 </project>
