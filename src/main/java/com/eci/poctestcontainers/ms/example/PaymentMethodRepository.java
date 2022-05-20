@@ -1,6 +1,5 @@
-package com.eci.poctestcontainers.ms.example.repository;
+package com.eci.poctestcontainers.ms.example;
 
-import com.eci.poctestcontainers.ms.example.entity.PaymentMethod;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface PaymentMethodRepository  extends PagingAndSortingRepository<PaymentMethod, Long> {

@@ -1,4 +1,4 @@
-package com.eci.poctestcontainers.ms.example.configuration;
+package com.eci.poctestcontainers.ms.example;
 
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;

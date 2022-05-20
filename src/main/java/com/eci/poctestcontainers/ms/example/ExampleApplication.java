@@ -1,15 +1,9 @@
 package com.eci.poctestcontainers.ms.example;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
-
-
-import com.eci.poctestcontainers.ms.example.configuration.ExampleConfigurator;
-
-import javax.sql.DataSource;
 
 
 /**
