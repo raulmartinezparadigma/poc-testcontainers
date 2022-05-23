@@ -1,4 +1,4 @@
-package com.eci.poctestcontainers.ms.example;
+package com.eci.poctestcontainers.ms.example.repository;
 
 import lombok.Getter;
 import lombok.Setter;

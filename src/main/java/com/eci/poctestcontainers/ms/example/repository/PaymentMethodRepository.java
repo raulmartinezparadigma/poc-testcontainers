@@ -1,4 +1,4 @@
-package com.eci.poctestcontainers.ms.example;
+package com.eci.poctestcontainers.ms.example.repository;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 

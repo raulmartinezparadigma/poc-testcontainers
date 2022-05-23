@@ -2,16 +2,14 @@
 package com.eci.poctestcontainers.ms.test.example;
 
 import com.eci.poctestcontainers.ms.example.ExampleApplication;
-import com.eci.poctestcontainers.ms.example.PaymentMethod;
-import com.eci.poctestcontainers.ms.example.PaymentMethodRepository;
+import com.eci.poctestcontainers.ms.example.repository.PaymentMethod;
+import com.eci.poctestcontainers.ms.example.repository.PaymentMethodRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.OracleContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -28,22 +26,14 @@ import java.util.List;
  **/
 @TestInstance(Lifecycle.PER_METHOD)
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = ExampleApplication.class)
+@SpringBootTest(classes = {
+        ExampleApplication.class,
+        H2TestProfileJPAConfig.class})
 public class ExampleApplicationTest {
 
     @Autowired
     private PaymentMethodRepository paymentMethodRepository;
-    @Container
-    public static OracleContainer container = new OracleContainer("gvenzl/oracle-xe")
-                    .withReuse(true);
 
-    // requires Spring Boot >= 2.2.6
-    @DynamicPropertySource
-    static void properties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", container::getJdbcUrl);
-        registry.add("spring.datasource.password", container::getPassword);
-        registry.add("spring.datasource.username", container::getUsername);
-    }
 
 
     @Test
