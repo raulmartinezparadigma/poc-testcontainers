@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @TestConfiguration
-public class H2TestProfileJPAConfig {
+public class OracleTestProfileJPAConfig {
 
     @Autowired
     private Environment env;
