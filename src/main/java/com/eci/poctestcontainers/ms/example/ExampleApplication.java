@@ -1,10 +1,8 @@
 package com.eci.poctestcontainers.ms.example;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.ApplicationContext;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
-
 
 /**
  * Aplicación Spring boot para arrancar.
@@ -15,17 +13,12 @@ import org.springframework.context.annotation.Import;
  * - Si el MS no tiene autenticación JWT, quitar SecurityConfigurator.class del import y excluir SecurityAutoConfiguration.class de la autoconfiguración
  *
  */
-@EnableAutoConfiguration
-@Import({ ExampleConfigurator.class})
+@SpringBootApplication
+@Import({ ExampleConfigurator.class })
 public class ExampleApplication {
 
-
-
 	public static void main(String[] args) {
-		ApplicationContext ctx = SpringApplication.run(ExampleApplication.class, args);
+		SpringApplication.run(ExampleApplication.class, args);
 	}
-
-
-
 
 }

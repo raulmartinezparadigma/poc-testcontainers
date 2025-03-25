@@ -1,4 +1,3 @@
-
 package com.eci.poctestcontainers.ms.test.example;
 
 import com.zaxxer.hikari.HikariDataSource;
@@ -12,7 +11,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.testcontainers.containers.OracleContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -63,5 +62,10 @@ public class OracleTestProfileJPAConfig {
         hibernateProperties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
 
         return hibernateProperties;
+    }
+
+    @Bean
+    public Runnable cleanup() {
+        return () -> container.close();
     }
 }
